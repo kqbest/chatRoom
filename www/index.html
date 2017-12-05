@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>chat</title>
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/main.css">
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/main.js"></script>
+</head>
+<body>
+  <div class="chatBox">
+    <h3 class="title">chats</h3>
+    <p class="onlineNum">当前共有<span id="count">0</span>人在线</p>
+    <div id="historyMsg"></div>
+    <div class="toolBox">
+      <input type="color" id="thisColor" title="字体颜色" readonly />
+      <input type="button" id="thisEmoji" value="表情" />
+      <label for="thisImg" class="imageLable">
+        <input type="button" value="图片" />
+        <input type="file" id="thisImg" value="" />
+      </label>
+      <input type="button" id="clean" value="清屏" />
+      <ul class="emojiBox"></ul>
+    </div>
+    <div class="clearfix">
+      <div id="newMsg" contenteditable="plaintext-only"></div>
+      <input type="button" id="sendBtn" class="fr" value="发送" title="发送" />
+    </div>
+    <div class="loginBox">
+      <div class="loginLayer"></div>
+      <div class="loginCnt">
+        <p class="loginTitle">正在连接服务...</p>
+        <input type="text" id="loginName" />
+        <input type="button" id="loginBtn" value="确定" />
+      </div>
+    </div>
+    <div class="round"></div>
+  </div>
+</body>
+</html>
