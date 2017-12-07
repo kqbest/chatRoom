@@ -44,7 +44,7 @@ Chat.prototype = {
                     '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^'+'\n'+
                     '      佛祖保佑       永不宕机     永无BUG         '+'\n'+
                     '////////////////////////////////////////////////');
-      },1000);
+      },500);
       //点击提交昵称
       $('#loginBtn').click(function(){
         var name = $('#loginName').val();
@@ -88,13 +88,11 @@ Chat.prototype = {
       });
       //enter发送消息
       $('#newMsg').keydown(function(event){
-        //发送
         if(event.keyCode == 13){
           //阻止enter默认事件
           event.cancelBubble = true;
           event.preventDefault();
           event.stopPropagation();
-          //进入换行操作
           var msg = $('#newMsg').html();
           var color = $('#thisColor').val();
           //检查输入框是否为空
@@ -121,18 +119,26 @@ Chat.prototype = {
       $('title').text('chat | ' + $('#loginName').val());
     });
     //断开连接的用户系统提示
-    this.socket.on('system',function(user,userCount,type){
+    this.socket.on('system',function(user, userCount, type){
       var msg = (type === 'login'?'加入群聊':'离开群聊');
       that._displayNewMsg('0', user, msg, 'red');
       $('#count').text(userCount);
     });
     //接收新消息
-    this.socket.on('newMsg',function(user,msg,color){      
+    this.socket.on('newMsg',function(user, msg, color){     
       that._displayNewMsg('1', user, msg, color);
     });
     //接收新图片
-    this.socket.on('newImg',function(user,imgData){      
+    this.socket.on('newImg',function(user, imgData){   
       that._displayImg(user, imgData);
+    });
+    //抖动窗口
+    this.socket.on('shakeMsg',function(user){
+      that._displayNewMsg('0', user, '发送了抖动窗口', 'red');
+      $('.chatBox').css('animation','mymove .1s linear 3');
+      setTimeout(() => {
+        $('.chatBox').css('animation','');
+      },600);
     });
     //加载表情
     this._initEmoji();
@@ -180,7 +186,7 @@ Chat.prototype = {
           }
         }
       } else if (document.selection && document.selection.type != "Control") {
-        // IE < 9  
+        // IE < 9
         document.selection.createRange().pasteHTML(html); 
       }  
     }
@@ -202,6 +208,10 @@ Chat.prototype = {
         }
         reader.readAsDataURL(file);
       }
+    });
+    //抖动窗口
+    $('#shake').click(function(){
+      that.socket.emit('shake');
     });
   },
   //定义消息样式

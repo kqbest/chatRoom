@@ -6,6 +6,24 @@
   background-color: #ccc;
   border-radius: 5px;
 }
+/* 抖动动画 */
+@keyframes mymove{
+  0%{
+    transform:translateX(0px);
+  }
+  25%{
+    transform:translateX(5px);
+  }
+  50%{
+    transform:translateY(-5px);
+  }
+  75%{
+    transform:translateX(0px);
+  }
+  100%{
+    transform:translateY(0px);
+  }
+}
 .title{
   height: 40px;
   line-height: 40px;

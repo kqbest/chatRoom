@@ -53,27 +53,29 @@ io.on('connection',function(socket){
       socket.name = name;
       users.push(name);
       socket.emit('loginSuccess');
-      io.sockets.emit('system', name, users.length , 'login');//向所有连接到服务器的客户端发送当前登陆用户的昵称
+      //向所有连接到服务器的客户端发送当前登陆用户的昵称
+      io.sockets.emit('system', name, users.length , 'login');
     }
   });
-
   //断开连接的事件
   socket.on('disconnect',function(){
     //将断开连接的用户从users中删除
-    users.splice(socket.userIndex,1);
+    users.splice(socket.userIndex, 1);
     //通知除自己以外的所有人
     socket.broadcast.emit('system', socket.name, users.length, 'loginOut');
   });
-
   //接收新消息
-  socket.on('postMsg',function(msg,color){
+  socket.on('postMsg',function(msg, color){
     //将消息发送到除自己外的所有用户
     socket.broadcast.emit('newMsg', socket.name, msg, color);
   });
-  
   //接收图片
   socket.on('img',function(imgData){
-    //将消息发送到除自己外的所有用户
+    //将图片发送到除自己外的所有用户
     socket.broadcast.emit('newImg', socket.name, imgData);
+  });
+  //抖动窗口
+  socket.on('shake',function(){
+    io.sockets.emit('shakeMsg', socket.name);
   });
 });
